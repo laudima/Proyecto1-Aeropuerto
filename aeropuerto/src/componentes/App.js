@@ -16,8 +16,9 @@ function App() {
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
-      <DatosGenerales />
-      <Columna />
+      
+      <div className="columna-datos-generales"><DatosGenerales /></div>
+      <div className="columna-detalles"><Columna /></div>
     </div>
   );
 }
