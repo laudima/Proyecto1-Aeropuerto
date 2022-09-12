@@ -16,4 +16,13 @@ h1,h2,p{
 .datos-generales{
     height: 100%;
     width: 70%;
+<<<<<<< HEAD
+=======
+}
+
+.columna{
+    height: 100%;
+    width: 30%;
+    display: inline-block;
+    vertical-align: top;
 }
