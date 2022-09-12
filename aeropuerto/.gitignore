@@ -23,4 +23,8 @@ config.js
 npm-debug.log*
 yarn-debug.log*
 <<<<<<< HEAD
+<<<<<<< HEAD
 yarn-error.log*
+=======
+yarn-error.log*
+>>>>>>> 5f519f29 (ya se puede escribir el hello world)
