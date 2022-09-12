@@ -11,7 +11,16 @@ import Columna from "./columna /Columna";
 function App() {
 
   const llave = Config.llave;
-
+  console.log(llave);
+  
+  let URL = "https://api.checkwx.com/metar/lat/40.72/lon/-73.99/decoded";
+  fetch(URL, {
+    method: "GET",
+    headers: {"X-API-Key": llave}
+  })
+    .then(response => response.json())
+    .then(data => console.log(data));
+  
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
