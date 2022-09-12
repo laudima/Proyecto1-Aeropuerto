@@ -1,7 +1,7 @@
 import React from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
-import Config from "../../config.js";
+
 /*
   El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
   se divide en dos secciones, una principal en la que se muestran los detalles generales y otra  que
@@ -15,6 +15,7 @@ function App() {
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
       <DatosGenerales />
+      <Columna />
     </div>
   );
 }
