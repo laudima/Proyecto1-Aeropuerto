@@ -1,7 +1,6 @@
 import React from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
-import Columna from "./columna /Columna";
 
 /*
   El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
@@ -10,7 +9,7 @@ import Columna from "./columna /Columna";
  */
 function App() {
 
-
+  const llave = Config.llave;
 
   return (
   
