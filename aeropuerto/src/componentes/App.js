@@ -8,6 +8,9 @@ import DatosGenerales from "./seccion_general/DatosGenerales";
   es una columna con datos especificos y el buscador para cambiar de ciudad.
  */
 function App() {
+
+
+
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
