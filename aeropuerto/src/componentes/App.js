@@ -10,7 +10,7 @@ import DatosGenerales from "./seccion_general/DatosGenerales";
 function App() {
   return (
   
-    <div className="app" style={{backgroundImage: `url(${Nubes})`, backgroundSize:'cover'}}>
+    <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
       <DatosGenerales />
     </div>
   );
