@@ -9,6 +9,9 @@ import Columna from "./columna /Columna";
   es una columna con datos especificos y el buscador para cambiar de ciudad.
  */
 function App() {
+
+  const llave = Config.llave;
+
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
