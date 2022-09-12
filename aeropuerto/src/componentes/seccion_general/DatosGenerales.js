@@ -7,9 +7,9 @@ function DatosGenerales(){
         <div className="datos-generales">
             <Logo />
             <Datos 
-                temperatura="16"
-                ciudad="Sinaloa"
-                clima="Soleado"
+                temperatura="16°"
+                ciudad="Monterrey"
+                clima="Nublado"
             />
         </div>
         
