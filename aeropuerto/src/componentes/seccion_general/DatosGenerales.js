@@ -8,9 +8,9 @@ function DatosGenerales(props){
         <div className="datos-generales">
             <Logo />
             <Datos 
-                temperatura="16°"
-                ciudad="Monterrey"
-                clima="Nublado"
+                temperatura={props.temperatura + "°"}
+                ciudad={props.ciudad}
+                clima={props.clima}
             />
         </div>
         
