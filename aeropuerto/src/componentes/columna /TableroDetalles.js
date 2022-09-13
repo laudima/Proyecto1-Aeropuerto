@@ -3,12 +3,22 @@ import React from "react";
 function TableroDetalles(props) {
     return (
         <div>
-        <div className="tituloTablero"> 
-            <h1>{props.titulo}</h1>
+        <div> 
+            <h2 style ={{fontSize:"18px",fontWeight:"800"}}>{props.titulo}</h2>
         </div>
-        <h1>{props.dato1}</h1>
-        <h2>{props.dato2}</h2>
-        <h3>{props.dato3}</h3>
+
+        <div className="info">
+            <h3 style ={{fontSize:"15px",fontWeight:"300"}}>{props.dato1}</h3>
+        </div>
+
+        <div className="info">
+            <h3 style ={{fontSize:"15px",fontWeight:"300"}}>{props.dato2}</h3>
+        </div>
+
+        <div className="info">
+            <h3 style ={{fontSize:"15px",fontWeight:"300"}}>{props.dato3}</h3>
+        </div>
+
         </div>
     );
 }

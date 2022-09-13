@@ -8,8 +8,12 @@ function Columna(props) {
     return (
         <div className="columna"> 
             <Buscador />
-            <OtrasCiudades/>
-            <ClimaDetalles/>
+            <div className="tablero-otras-ciudades">
+                <OtrasCiudades/>
+            </div> 
+            <div  className="tablero-detalles-clima"> 
+                <ClimaDetalles/>
+            </div>
         </div>
     );
 }

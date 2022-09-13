@@ -4,7 +4,7 @@ import TableroDetalles from "./TableroDetalles";
 
 function OtrasCiudades(props){
     return <TableroDetalles
-        titulo="Otras ciudades"
+        titulo="Otras Ciudades"
         dato1= "Ciudad de Mexico"
         dato2="Guadalajara"
         dato3= "Monterrey"
