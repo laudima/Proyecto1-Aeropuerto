@@ -3,7 +3,8 @@ import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
 import Config from "../config.js"
-
+import Papa from 'papaparse';
+import csv from "../dataset1.csv";
 
 function getClima(latitud, longitud, llave){
   let datosClima = {};
@@ -75,9 +76,36 @@ function App() {
     setClima(datosClima.clima);
   }
 
-  console.log(JSON.parse(JSON.stringify(datosClima)));
+  //console.log(JSON.parse(JSON.stringify(datosClima)));
 
 }, 400);
+
+var tickets;
+
+const response = fetch(csv)
+   .then(response => response.text())
+   .then(v => Papa.parse(v,{header: true}))
+   .then(data => tickets = data)
+   .catch(err => console.log(err))
+
+let ciudades = {};
+
+setTimeout(()=>{
+  for (let i = 0; i < tickets.data.length; i++){
+    if (!(tickets.data[i].origin in ciudades)){
+      ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
+                                          longitud:tickets.data[i].origin_longitude};
+    }
+
+    if (!(tickets.data[i].destination in ciudades)){
+      ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
+                                          longitud:tickets.data[i].destination_longitude};
+    }
+
+  }
+  console.log(ciudades);
+},400);
+
     
   return (
   
