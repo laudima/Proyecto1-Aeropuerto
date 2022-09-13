@@ -47,3 +47,15 @@ h3 {
     align-items: center;
     margin-top: 50px;
 }
+
+.lugar-fecha{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.clima{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
