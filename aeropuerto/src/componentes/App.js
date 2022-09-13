@@ -13,8 +13,8 @@ function App() {
 
   const llave = Config.llave;
   const [ciudad, setCiudad] = useState("Monterrey");
-  const [temperatura, setTemperatura] = useState("16");
-  /*
+  const [temperatura, setTemperatura] = useState("--");
+  const [clima, setClima] = useState("");
   let URL = "https://api.checkwx.com/metar/lat/25.77/lon/-100.10/decoded";
   fetch(URL, {
     method: "GET",
@@ -23,9 +23,25 @@ function App() {
     .then(response => response.json())
     .then(datos =>  {
       setTemperatura(datos.data[0].temperature.celsius.toString());
-      console.log(datos.data[0].temperature.celsius);
+      let hayClima = false;
+      if (datos.data.hasOwnProperty("conditions")){
+        if (datos.data[0].conditions[0].startsWith("RA")){
+          setClima = "Lluvioso";
+          hayClima = true;
+        }else if (datos.data[0].conditions[0].startsWith("TS")){
+          setClima = "Tormenta Electrica";
+          hayClima = true;
+        }
+      }
+      if (!hayClima){
+        if (datos.data[0].clouds[0].code === "CLR"){
+          setClima("Soleado");
+        }else{
+          setClima("Nublado");
+        }
+      }
     });
-    */
+    
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
