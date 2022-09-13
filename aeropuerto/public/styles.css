@@ -49,8 +49,10 @@ h3 {
     opacity: 0.8;
 }
 
-.buscador{
-    padding:10%;
+.lugar-fecha{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .tablero{
@@ -90,16 +92,4 @@ h3 {
     display: grid;
     place-items: center;
     padding: 10px;
-}
-
-.lugar-fecha{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.clima{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
