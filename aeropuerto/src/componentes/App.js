@@ -2,7 +2,7 @@ import React from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
-
+import Config from "../Config"
 /*
   El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
   se divide en dos secciones, una principal en la que se muestran los detalles generales y otra  que
