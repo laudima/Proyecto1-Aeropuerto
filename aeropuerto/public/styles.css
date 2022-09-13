@@ -44,13 +44,14 @@ h3 {
 .columna{
     display: flex;
     flex-direction: column;
-    height: 100%;
-    background : #424949;
-    opacity: 0.8;
+    align-items: center;
+    margin-top: 50px;
 }
 
-.buscador{
-    padding:10%;
+.lugar-fecha{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .tablero{
