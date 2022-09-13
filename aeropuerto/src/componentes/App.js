@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, {useState} from "react";
 =======
 import {{React, useState}, useState} from "react";
 >>>>>>> b5e5455c (Ajuste las posiciones de los datos generales y agregue hooks para que se muestren los datos recibidos de la api)
+=======
+import React, {useState} from "react";
+>>>>>>> 297780b1 (cambio para uqe compile)
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
