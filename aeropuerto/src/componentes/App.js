@@ -48,6 +48,10 @@ function getClima(latitud, longitud, llave){
         datosClima.viento = datos.data[0].wind.speed_kph;
       }
 
+      if ("station" in datos.data[0]){
+        datosClima.ciudad = datos.data[0].station.location;
+      }
+
     });
 
   return datosClima;
@@ -76,9 +80,13 @@ function App() {
     setClima(datosClima.clima);
   }
 
+  if ("ciudad" in datosClima){
+    setCiudad(datosClima.ciudad);
+  }
+
   //console.log(JSON.parse(JSON.stringify(datosClima)));
 
-}, 400);
+}, 500);
 
 var tickets;
 
@@ -103,10 +111,8 @@ setTimeout(()=>{
     }
 
   }
-  console.log(ciudades);
 },400);
-
-    
+    console.log(datosClima);
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
@@ -118,7 +124,7 @@ setTimeout(()=>{
           clima={clima}
           />
       </div>
-      <div className="columna-detalles"><Columna /></div>
+      <div className="columna-detalles"><Columna datos={datosClima} /></div>
     </div>
   );
 }
