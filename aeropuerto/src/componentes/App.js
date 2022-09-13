@@ -1,4 +1,4 @@
-import {{React, useState}, useState} from "react";
+import React, {useState} from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
