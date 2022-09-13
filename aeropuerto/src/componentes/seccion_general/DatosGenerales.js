@@ -1,14 +1,15 @@
 import React from "react";
 import Datos from './Datos';
 import Logo from './Logo';
-function DatosGenerales(){
+function DatosGenerales(props){
+    
     return (
     <div>
         <div className="datos-generales">
             <Logo />
             <Datos 
-                temperatura="16°"
-                ciudad="Monterrey"
+                temperatura={props.temperatura + "°"}
+                ciudad={props.ciudad}
                 clima="Nublado"
             />
         </div>
