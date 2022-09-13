@@ -4,43 +4,80 @@ import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
 import Config from "../config.js"
 
-/*
-  El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
-  se divide en dos secciones, una principal en la que se muestran los detalles generales y otra  que
-  es una columna con datos especificos y el buscador para cambiar de ciudad.
- */
-function App() {
 
-  const llave = Config.llave;
-  const [ciudad, setCiudad] = useState("Monterrey");
-  const [temperatura, setTemperatura] = useState("--");
-  const [clima, setClima] = useState("");
-  let URL = "https://api.checkwx.com/metar/lat/25.77/lon/-100.10/decoded";
+function getClima(latitud, longitud, llave){
+  let datosClima = {};
+  let URL = "https://api.checkwx.com/metar/lat/" + latitud + "/lon/" + longitud + "/decoded";
   fetch(URL, {
     method: "GET",
     headers: {"X-API-Key": llave}
   })
     .then(response => response.json())
     .then(datos =>  {
-      setTemperatura(datos.data[0].temperature.celsius.toString());
-      let hayClima = false;
-      if (datos.data.hasOwnProperty("conditions")){
+
+      if ("temperature" in datos.data[0]){
+        datosClima.temperatura = datos.data[0].temperature.celsius;
+      }
+      
+      if ("conditions" in datos.data[0]){
         if (datos.data[0].conditions[0].startsWith("RA")){
-          setClima = "Lluvioso";
-          hayClima = true;
+          datosClima.clima = "Lluvioso";
         }else if (datos.data[0].conditions[0].startsWith("TS")){
-          setClima = "Tormenta Electrica";
-          hayClima = true;
+          datosClima.clima = "Tormenta Electrica";
         }
       }
-      if (!hayClima){
+
+      if (!("clima" in datosClima)){
         if (datos.data[0].clouds[0].code === "CLR"){
-          setClima("Soleado");
+          datosClima.clima = "Soleado";
         }else{
-          setClima("Nublado");
+          datosClima.clima = "Nublado";
         }
       }
+
+      if ("barometer" in datos.data[0]){
+        datosClima.presion = datos.data[0].barometer.hg;
+      }
+
+      if ("humidity" in datos.data[0]){
+        datosClima.humedad = datos.data[0].humidity.percent;
+      }
+
+      if ("wind" in datos.data[0]){
+        datosClima.viento = datos.data[0].wind.speed_kph;
+      }
+
     });
+
+  return datosClima;
+}
+
+/*
+  El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
+  se divide en dos secciones, una principal en la que se muestran los detalles generales y otra  que
+  es una columna con datos especificos y el buscador para cambiar de ciudad.
+ */
+function App() {
+  const llave = Config.llave;
+  const [ciudad, setCiudad] = useState("Monterrey");
+  const [temperatura, setTemperatura] = useState("--");
+  const [clima, setClima] = useState("");
+
+  let datosClima = getClima(25.77,-100.10,llave);
+
+  setTimeout(function()
+{
+  if ("temperatura" in datosClima){
+    setTemperatura(datosClima.temperatura);
+  }
+
+  if ("clima" in datosClima){
+    setClima(datosClima.clima);
+  }
+
+  console.log(JSON.parse(JSON.stringify(datosClima)));
+
+}, 400);
     
   return (
   
@@ -50,6 +87,7 @@ function App() {
         <DatosGenerales
           temperatura={temperatura}
           ciudad={ciudad}
+          clima={clima}
           />
       </div>
       <div className="columna-detalles"><Columna /></div>

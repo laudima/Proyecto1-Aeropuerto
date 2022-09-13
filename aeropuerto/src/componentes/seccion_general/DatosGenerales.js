@@ -10,7 +10,7 @@ function DatosGenerales(props){
             <Datos 
                 temperatura={props.temperatura + "°"}
                 ciudad={props.ciudad}
-                clima="Nublado"
+                clima={props.clima}
             />
         </div>
         
