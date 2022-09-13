@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
-import Config from "../config.js"
+import Config from "../config.js";
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
 
