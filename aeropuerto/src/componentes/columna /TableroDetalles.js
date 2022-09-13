@@ -2,13 +2,22 @@ import React from "react";
 
 function TableroDetalles(props) {
     return (
-        <div>
-        <div className="tituloTablero"> 
-            <h1>{props.titulo}</h1>
+        <div className="tablero">
+        <div className="titulo-tablero"> 
+            <h3 style={{fontSize:"15px", fontWeight:"200",color:"white"}}>{props.titulo}</h3>
         </div>
-        <h1>{props.dato1}</h1>
-        <h2>{props.dato2}</h2>
-        <h3>{props.dato3}</h3>
+        <div className="tablero-detalles">
+            <h3 style={{fontSize:"15px", fontWeight:"200",color:"white"}}>{props.dato1}</h3>
+            <h3 style={{fontSize:"15px", fontWeight:"bold", color:"white"}}>{props.dato1info}</h3>
+        </div>
+        <div className="tablero-detalles">
+            <h3 style={{fontSize:"15px", fontWeight:"200",color:"white"}}>{props.dato2}</h3>
+            <h3 style={{fontSize:"15px", fontWeight:"bold",color:"white"}}>{props.dato2info}</h3>
+        </div>
+        <div className="tablero-detalles">
+            <h3 style={{fontSize:"15px", fontWeight:"200",color:"white"}}>{props.dato3}</h3>
+            <h3 style={{fontSize:"15px", fontWeight:"bold",color:"white"}}>{props.dato3info}</h3>
+        </div>
         </div>
     );
 }

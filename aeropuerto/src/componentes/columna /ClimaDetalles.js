@@ -4,10 +4,13 @@ import TableroDetalles from "./TableroDetalles";
 
 function ClimaDetalles(props) {
     return <TableroDetalles
-        titulo="Detalles del clima"
-        dato1= "Presion: 1010 kpa" 
-        dato2="Humedad: 80%"
-        dato3= "Aeropuerto Benito Juarez"
+        titulo="Detalles del Clima"
+        dato1= "Presión:"
+        dato1info= {props.presion}
+        dato2="Humedad:"
+        dato2info= {props.humedad}
+        dato3= "Velocidad de viento:"
+        dato3info= {props.velocidadViento}
     />
 }
 
