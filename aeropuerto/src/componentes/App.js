@@ -41,6 +41,7 @@ async function actualizaCache(ciudades, setCache, llave){
       });
       cache[ciudad] = datosClima;
   }
+  window.localStorage.setItem('cache', JSON.stringify(cache));
   setCache(cache);
 }
 
@@ -62,9 +63,6 @@ function App() {
                                             temperatura: 27,
                                             viento: 15
                                           }});
-  useEffect(() => {
-    window.localStorage.setItem('cache', JSON.stringify(cache));
-  },[cache]) ; 
 
   var ciudades = {};
   useEffect(()=>{
@@ -84,18 +82,9 @@ function App() {
                                                 longitud:tickets.data[i].destination_longitude};
           }
         }
-        //actualizaCache(ciudades,setCache,llave);
     })
     .catch(err => console.log(err))
 
-    
-    const interval = setInterval(()=>{
-      if (contadorSegundos === 0){
-        actualizaCache(ciudades,setCache,llave);
-      }
-     },1000)
-       
-     return () => clearInterval(interval);
   },[])
   
   useEffect(()=>{
@@ -112,7 +101,10 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('count', contadorSegundos);
     const interval = setInterval(()=>{
-      setContadorSegundos((contadorSegundos + 1) % 360000); 
+      if (contadorSegundos === 0){
+        actualizaCache(ciudades,setCache,llave);
+      }
+      setContadorSegundos((contadorSegundos + 1) % 3600); 
     },1000);
     return () => clearInterval(interval); 
   }, [contadorSegundos]);
