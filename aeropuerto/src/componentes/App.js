@@ -68,17 +68,14 @@ function getClima(latitud, longitud, llave){
  */
 function App() {
   const llave = Config.llave;
-  const [datosClima, setDatosClima] = useState();
-  const [temperatura, setTemperatura] = useState("--");
-  
-  const [nombreCiudad, setNombreCiudad] = useState("--")
-  const [clima, setClima] = useState("");
+  const [datosClima, setDatosClima] = useState({});
   const [cache, setCache] = useState({MTY:{
                                             ciudad: "Monterrey, MX",
                                             clima: "Nublado",
                                             humedad: 66,
                                             presion: 29.9,
-                                            temperatura: 27
+                                            temperatura: 27,
+                                            viento: 15
                                           }});
 
   const [ciudad, setCiudad] = useState("MTY");
@@ -86,48 +83,48 @@ function App() {
   actualizaCache();
   
   useEffect(()=>{
-    setTemperatura(cache[ciudad].temperatura);
-    setClima(cache[ciudad].clima);
-    setNombreCiudad(cache[ciudad].ciudad);
-  },[ciudad]);
+    setDatosClima({
+      ciudad: cache[ciudad].ciudad,
+      clima: cache[ciudad].clima,
+      humedad: cache[ciudad].humedad,
+      presion: cache[ciudad].presion,
+      temperatura: cache[ciudad].temperatura,
+      viento: cache[ciudad].viento
+    });
+  },[ciudad,cache]);
   
 let ciudades = {};
 
-const response = fetch(csv)
+  fetch(csv)
    .then(response => response.text())
    .then(v => Papa.parse(v,{header: true}))
-   .then(data => tickets = data)
+   .then(tickets => {
+      for (let i = 0; i < tickets.data.length; i++){
+        if (!(tickets.data[i].origin in ciudades)){
+          ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
+                                              longitud:tickets.data[i].origin_longitude};
+        }
+    
+        if (!(tickets.data[i].destination in ciudades)){
+          ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
+                                              longitud:tickets.data[i].destination_longitude};
+        }
+      }
+   })
    .catch(err => console.log(err))
 
-let ciudades = {};
-
-setTimeout(()=>{
-  for (let i = 0; i < tickets.data.length; i++){
-    if (!(tickets.data[i].origin in ciudades)){
-      ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
-                                          longitud:tickets.data[i].origin_longitude};
-    }
-
-    if (!(tickets.data[i].destination in ciudades)){
-      ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
-                                          longitud:tickets.data[i].destination_longitude};
-    }
-
-  }
-},400);
-    console.log(datosClima);
   return (
   
     <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
       
       <div className="columna-datos-generales">
         <DatosGenerales
-          temperatura={temperatura}
-          ciudad={nombreCiudad}
-          clima={clima}
+          temperatura={datosClima.temperatura}
+          ciudad={datosClima.ciudad}
+          clima={datosClima.clima}
           />
       </div>
-      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={datosCiudades}/></div>
+      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades}/></div>
     </div>
   );
 }
