@@ -59,6 +59,10 @@ async function actualizaCache(ciudades, setCache, llave){
       cache[ciudad] = datosClima;
   }
   setCache(cache);
+      });
+      cache[ciudad] = datosClima;
+  }
+  setCache(cache);
 }
 
 function getClima(latitud, longitud, llave){
