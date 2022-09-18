@@ -5,7 +5,6 @@ import Columna from "./columna /Columna";
 import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
-import dataCiudades from "./ciudades.js";
 
 async function actualizaCache(ciudades, setCache, llave){
   let cache = {};
