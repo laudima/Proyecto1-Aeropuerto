@@ -6,8 +6,59 @@ import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
 
-function actualizaCache(){
+async function actualizaCache(ciudades, setCache, llave){
+  let cache = {};
+  for (let [ciudad, coordenadas] of Object.entries(ciudades)){
+    const longitud = coordenadas.longitud, latitud = coordenadas.latitud;
+    let datosClima = {}
+    let URL = "https://api.checkwx.com/metar/lat/" + latitud + "/lon/" + longitud + "/decoded";
+    await fetch(URL, {
+        method: "GET",
+        headers: {"X-API-Key": llave}
+    })
+      .then(response => response.json())
+      .then(datos =>  {
 
+        if ("temperature" in datos.data[0]){
+          datosClima.temperatura = datos.data[0].temperature.celsius;
+        }
+        
+        if ("conditions" in datos.data[0]){
+          if (datos.data[0].conditions[0] === "RA"){
+            datosClima.clima = "Lluvioso";
+          }else if (datos.data[0].conditions[0] === "TS"){
+            datosClima.clima = "Tormenta Electrica";
+          }
+        }
+
+        if (!("clima" in datosClima)){
+          if (datos.data[0].clouds[0].code.startsWith("CLR") || datos.data[0].clouds[0].code.startsWith("FEW")){
+            datosClima.clima = "Soleado";
+          }else{
+            datosClima.clima = "Nublado";
+          }
+        }
+
+        if ("barometer" in datos.data[0]){
+          datosClima.presion = datos.data[0].barometer.hg;
+        }
+
+        if ("humidity" in datos.data[0]){
+          datosClima.humedad = datos.data[0].humidity.percent;
+        }
+
+        if ("wind" in datos.data[0]){
+          datosClima.viento = datos.data[0].wind.speed_kph;
+        }
+
+        if ("station" in datos.data[0]){
+          datosClima.ciudad = datos.data[0].station.location;
+        }
+
+      });
+      cache[ciudad] = datosClima;
+  }
+  setCache(cache);
 }
 
 function getClima(latitud, longitud, llave){
@@ -79,8 +130,37 @@ function App() {
                                           }});
 
   const [ciudad, setCiudad] = useState("MTY");
-  
-  actualizaCache();
+  var ciudades = {};
+  useEffect(()=>{
+    
+
+    fetch(csv)
+    .then(response => response.text())
+    .then(v => Papa.parse(v,{header: true}))
+    .then(tickets => {
+        for (let i = 0; i < tickets.data.length; i++){
+          if (!(tickets.data[i].origin in ciudades)){
+            ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
+                                                longitud:tickets.data[i].origin_longitude};
+          }
+      
+          if (!(tickets.data[i].destination in ciudades)){
+            ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
+                                                longitud:tickets.data[i].destination_longitude};
+          }
+        }
+        //actualizaCache(ciudades,setCache,llave);
+    })
+    .catch(err => console.log(err))
+
+    
+    const interval=setInterval(()=>{
+      //actualizaCache(ciudades,setCache,llave);
+     },3600000)
+       
+       
+     return () => clearInterval(interval);
+  },[])
   
   useEffect(()=>{
     setDatosClima({
@@ -93,25 +173,7 @@ function App() {
     });
   },[ciudad,cache]);
   
-let ciudades = {};
-
-  fetch(csv)
-   .then(response => response.text())
-   .then(v => Papa.parse(v,{header: true}))
-   .then(tickets => {
-      for (let i = 0; i < tickets.data.length; i++){
-        if (!(tickets.data[i].origin in ciudades)){
-          ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
-                                              longitud:tickets.data[i].origin_longitude};
-        }
-    
-        if (!(tickets.data[i].destination in ciudades)){
-          ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
-                                              longitud:tickets.data[i].destination_longitude};
-        }
-      }
-   })
-   .catch(err => console.log(err))
+console.log(cache);
 
   return (
   
