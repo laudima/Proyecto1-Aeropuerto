@@ -41,6 +41,7 @@ async function actualizaCache(ciudades, setCache, llave){
       });
       cache[ciudad] = datosClima;
   }
+  window.localStorage.setItem('cache', JSON.stringify(cache));
   setCache(cache);
 }
 
@@ -52,7 +53,6 @@ async function actualizaCache(ciudades, setCache, llave){
 function App() {
   const llave = Config.llave;
   const [datosClima, setDatosClima] = useState({});
-  const [ciudad, setCiudad] = useState("MTY");
   const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(localStorage.getItem('count')) || -10);
   const [cache, setCache] = useState(JSON.parse(localStorage.getItem('cache')) || {MTY:{
                                             ciudad: "Monterrey, MX",
@@ -62,9 +62,6 @@ function App() {
                                             temperatura: 27,
                                             viento: 15
                                           }});
-  useEffect(() => {
-    window.localStorage.setItem('cache', JSON.stringify(cache));
-  },[cache]) ; 
 
   const [ciudad, setCiudad] = useState("MTY");
   const [ciudades, setCiudades] = useState({MTY:{longitud: -100.3167, latitud: 25.6667}});
@@ -94,14 +91,6 @@ function App() {
     })
     .catch(err => console.log(err))
 
-    
-    const interval = setInterval(()=>{
-      if (contadorSegundos === 0){
-        actualizaCache(ciudades,setCache,llave);
-      }
-     },1000)
-       
-     return () => clearInterval(interval);
   },[])
   
   useEffect(()=>{
@@ -118,7 +107,10 @@ function App() {
   useEffect(() => {
     window.localStorage.setItem('count', contadorSegundos);
     const interval = setInterval(()=>{
-      setContadorSegundos((contadorSegundos + 1) % 360000); 
+      if (contadorSegundos === 0){
+        actualizaCache(ciudades,setCache,llave);
+      }
+      setContadorSegundos((contadorSegundos + 1) % 3600); 
     },1000);
     return () => clearInterval(interval); 
   }, [contadorSegundos]);
