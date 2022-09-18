@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useState, useEffect} from "react";
 import iconoNube from "../../imagenes/nube-i.svg";
 
 /* 
@@ -6,9 +6,23 @@ import iconoNube from "../../imagenes/nube-i.svg";
     en la aplicacion y renderiza dinamicamente un icono dependiendo del clima que haya en el momento.
 */
 
+
 function Datos(props){
+    
     const {temperatura,ciudad,clima} = props;
     const configuracionFecha = {  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+    const [fecha, setFecha] = useState(new Date().toLocaleString('es-ES',configuracionFecha));
+
+    useEffect(() => {
+        var timer = setInterval( () => tick(), 1000 );
+        return function limpia() {
+            clearInterval(timer);
+            };
+    });
+      
+    function tick() {
+        setFecha(new Date().toLocaleString('es-ES',configuracionFecha));
+    }
 
     return (
         <div className="datos">
@@ -17,7 +31,7 @@ function Datos(props){
 
                 <div className="lugar-fecha" style={{margin:"0 20px"}}>
                     <h2 style={{fontSize: "50px", fontWeight:"bold"}}>{ciudad}</h2>
-                    <p style={{fontSize:"18px", fontWeight:"300"}}>{new Date().toLocaleString('es-ES',configuracionFecha)}</p>
+                    <p style={{fontSize:"18px", fontWeight:"300"}}>{fecha}</p>
                 </div>
                 
                 <div className="clima">
