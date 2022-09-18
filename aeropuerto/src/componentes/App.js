@@ -1,10 +1,11 @@
 import {React, useState} from "react";
-import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
+import Nubes from "../imagenes/nubes1.jpg";// Imagen provisional
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
-import Config from "../config.js"
+import Config from "../config.js";
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
+import datosCiudades from "./ciudades.js";  // Importamos el diccionario de la ciudades 
 
 function getClima(latitud, longitud, llave){
   let datosClima = {};
@@ -100,7 +101,7 @@ let ciudades = {};
 
 setTimeout(()=>{
   for (let i = 0; i < tickets.data.length; i++){
-    if (!(tickets.data[i].origin in ciudades)){
+    if (!(tickets.data[i].origin in ciudades)){ 
       ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
                                           longitud:tickets.data[i].origin_longitude};
     }
@@ -124,7 +125,7 @@ setTimeout(()=>{
           clima={clima}
           />
       </div>
-      <div className="columna-detalles"><Columna datos={datosClima} /></div>
+      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={datosCiudades}/></div>
     </div>
   );
 }
