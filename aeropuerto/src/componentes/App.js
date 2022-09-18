@@ -159,7 +159,7 @@ function App() {
 
     
     const interval=setInterval(()=>{
-      //actualizaCache(di ccionarioCiudades,setCache,llave);
+      //actualizaCache(diccionarioCiuades,setCache,llave);
      },3600000)
        
        
