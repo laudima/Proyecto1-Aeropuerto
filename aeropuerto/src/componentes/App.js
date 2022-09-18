@@ -5,6 +5,7 @@ import Columna from "./columna /Columna";
 import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
+import dataCiudades from "./ciudades.js";
 
 async function actualizaCache(ciudades, setCache, llave){
   let cache = {};
@@ -130,32 +131,36 @@ function App() {
                                           }});
 
   const [ciudad, setCiudad] = useState("MTY");
-  var ciudades = {};
+  const [ciudades, setCiudades] = useState({MTY:{longitud: -100.3167, latitud: 25.6667}});
+
   useEffect(()=>{
     
+    let diccionarioCiudades = {};
 
     fetch(csv)
     .then(response => response.text())
     .then(v => Papa.parse(v,{header: true}))
     .then(tickets => {
         for (let i = 0; i < tickets.data.length; i++){
-          if (!(tickets.data[i].origin in ciudades)){
-            ciudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
+          if (!(tickets.data[i].origin in diccionarioCiudades)){
+            diccionarioCiudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
                                                 longitud:tickets.data[i].origin_longitude};
           }
       
-          if (!(tickets.data[i].destination in ciudades)){
-            ciudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
+          if (!(tickets.data[i].destination in diccionarioCiudades)){
+            diccionarioCiudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
                                                 longitud:tickets.data[i].destination_longitude};
           }
         }
-        //actualizaCache(ciudades,setCache,llave);
+        console.log(diccionarioCiudades);
+        setCiudades(diccionarioCiudades);
+        //actualizaCache(diccionarioCiudades,setCache,llave);
     })
     .catch(err => console.log(err))
 
     
     const interval=setInterval(()=>{
-      //actualizaCache(ciudades,setCache,llave);
+      //actualizaCache(di ccionarioCiudades,setCache,llave);
      },3600000)
        
        
@@ -186,7 +191,7 @@ console.log(cache);
           clima={datosClima.clima}
           />
       </div>
-      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades}/></div>
+      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades} setCiudad={setCiudad}/></div>
     </div>
   );
 }

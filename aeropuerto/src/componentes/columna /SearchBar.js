@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import CloseIcon from "@material-ui/icons/Close";
 
-function SearchBar({ placeholder, data }) {
+function SearchBar({ placeholder, data, setCiudad }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) => {
-      return value.ciudad.toLowerCase().includes(searchWord.toLowerCase());
+    const newFilter = ciudades.filter((value) => {
+      return value.toLowerCase().includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -24,6 +24,8 @@ function SearchBar({ placeholder, data }) {
     setFilteredData([]);
     setWordEntered("");
   };
+
+  const ciudades = Object.keys(data);
 
   return (
     <div className="search">
@@ -44,11 +46,11 @@ function SearchBar({ placeholder, data }) {
       </div>
       {filteredData.length !== 0 && (
         <div className="dataResult">
-          {filteredData.slice(0, 15).map((value, key) => {
+          {filteredData.slice(0, 15).map((value,index) => {
             return (
-              <a className="dataItem" href={value.ciudad} target="_blank">
-                <p style={{fontSize:"15px", fontWeight:"200",color:"black"}}>{value.ciudad} </p>
-              </a>
+              <span key={index} className="dataItem" onClick={()=>setCiudad(value)}>
+                <p style={{fontSize:"15px", fontWeight:"200",color:"black"}}>{value} </p>
+              </span>
             );
           })}
         </div>
