@@ -70,26 +70,49 @@ function App() {
     
     let diccionarioCiudades = {};
 
-    fetch(csv)
-    .then(response => response.text())
-    .then(v => Papa.parse(v,{header: true}))
-    .then(tickets => {
-        for (let i = 0; i < tickets.data.length; i++){
-          if (!(tickets.data[i].origin in diccionarioCiudades)){
-            diccionarioCiudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
-                                                longitud:tickets.data[i].origin_longitude};
+      fetch(csv)
+     .then(response => response.text())
+     .then(v => Papa.parse(v,{header: true}))
+     .then(tickets => {
+          for (let i = 0; i < tickets.data.length; i++){
+            if (!(tickets.data[i].origin in diccionarioCiudades)){
+              diccionarioCiudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
+                                                  longitud:tickets.data[i].origin_longitude};
+            }
+        
+            if (!(tickets.data[i].destination in diccionarioCiudades)){
+              diccionarioCiudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
+                                                  longitud:tickets.data[i].destination_longitude};
+            }
           }
-      
-          if (!(tickets.data[i].destination in diccionarioCiudades)){
-            diccionarioCiudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
-                                                longitud:tickets.data[i].destination_longitude};
-          }
-        }
-        console.log(diccionarioCiudades);
+        //actualizaCache(ciudades,setCache,llave);
+         console.log(diccionarioCiudades);
         setCiudades(diccionarioCiudades);
         //actualizaCache(diccionarioCiudades,setCache,llave);
     })
-    .catch(err => console.log(err))
+     .catch(err => console.log(err))
+
+    
+    const interval=setInterval(()=>{
+      //actualizaCache(ciudades,setCache,llave);
+     },3600000)
+       
+       
+     return () => clearInterval(interval);
+  },[])
+  
+  useEffect(()=>{
+    setDatosClima({
+      ciudad: cache[ciudad].ciudad,
+      clima: cache[ciudad].clima,
+      humedad: cache[ciudad].humedad,
+      presion: cache[ciudad].presion,
+      temperatura: cache[ciudad].temperatura,
+      viento: cache[ciudad].viento
+    });
+  },[ciudad,cache]);
+  
+console.log(cache);
 
   },[])
   
