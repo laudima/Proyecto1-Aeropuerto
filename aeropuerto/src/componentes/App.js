@@ -19,10 +19,6 @@ async function actualizaCache(ciudades, setCache, llave){
       .then(response => response.json())
       .then(datos =>  {
 
-        if ("temperature" in datos.data[0]){
-          datosClima.temperatura = datos.data[0].temperature.celsius;
-        }
-        
         if ("conditions" in datos.data[0]){
           if (datos.data[0].conditions[0] === "RA"){
             datosClima.clima = "Lluvioso";
@@ -32,88 +28,20 @@ async function actualizaCache(ciudades, setCache, llave){
         }
 
         if (!("clima" in datosClima)){
-          if (datos.data[0].clouds[0].code.startsWith("CLR") || datos.data[0].clouds[0].code.startsWith("FEW")){
-            datosClima.clima = "Soleado";
-          }else{
-            datosClima.clima = "Nublado";
-          }
+            datosClima.clima = datos.data[0].clouds[0].code.startsWith("CLR") || 
+                               datos.data[0].clouds[0].code.startsWith("FEW") ? "Soleado" : "Nublado";
         }
-
-        if ("barometer" in datos.data[0]){
-          datosClima.presion = datos.data[0].barometer.hg;
-        }
-
-        if ("humidity" in datos.data[0]){
-          datosClima.humedad = datos.data[0].humidity.percent;
-        }
-
-        if ("wind" in datos.data[0]){
-          datosClima.viento = datos.data[0].wind.speed_kph;
-        }
-
-        if ("station" in datos.data[0]){
-          datosClima.ciudad = datos.data[0].station.location;
-        }
+        
+        datosClima.temperatura = "temperature" in datos.data[0] ? datos.data[0].temperature.celsius : "--";
+        datosClima.presion = "barometer" in datos.data[0] ? datos.data[0].barometer.hg : "--";
+        datosClima.humedad = "humidity" in datos.data[0] ? datos.data[0].humidity.percent : "--";
+        datosClima.viento = "wind" in datos.data[0] ? datos.data[0].wind.speed_kph : "--";
+        datosClima.ciudad = "station" in datos.data[0] ? datos.data[0].station.location : "--";
 
       });
       cache[ciudad] = datosClima;
   }
   setCache(cache);
-      });
-      cache[ciudad] = datosClima;
-  }
-  setCache(cache);
-}
-
-function getClima(latitud, longitud, llave){
-  let datosClima = {};
-  let URL = "https://api.checkwx.com/metar/lat/" + latitud + "/lon/" + longitud + "/decoded";
-  fetch(URL, {
-    method: "GET",
-    headers: {"X-API-Key": llave}
-  })
-    .then(response => response.json())
-    .then(datos =>  {
-
-      if ("temperature" in datos.data[0]){
-        datosClima.temperatura = datos.data[0].temperature.celsius;
-      }
-      
-      if ("conditions" in datos.data[0]){
-        if (datos.data[0].conditions[0].startsWith("RA")){
-          datosClima.clima = "Lluvioso";
-        }else if (datos.data[0].conditions[0].startsWith("TS")){
-          datosClima.clima = "Tormenta Electrica";
-        }
-      }
-
-      if (!("clima" in datosClima)){
-        if (datos.data[0].clouds[0].code.startsWith("CLR") || datos.data[0].clouds[0].code.startsWith("FEW")){
-          datosClima.clima = "Soleado";
-        }else{
-          datosClima.clima = "Nublado";
-        }
-      }
-
-      if ("barometer" in datos.data[0]){
-        datosClima.presion = datos.data[0].barometer.hg;
-      }
-
-      if ("humidity" in datos.data[0]){
-        datosClima.humedad = datos.data[0].humidity.percent;
-      }
-
-      if ("wind" in datos.data[0]){
-        datosClima.viento = datos.data[0].wind.speed_kph;
-      }
-
-      if ("station" in datos.data[0]){
-        datosClima.ciudad = datos.data[0].station.location;
-      }
-
-    });
-
-  return datosClima;
 }
 
 /*
@@ -124,7 +52,9 @@ function getClima(latitud, longitud, llave){
 function App() {
   const llave = Config.llave;
   const [datosClima, setDatosClima] = useState({});
-  const [cache, setCache] = useState({MTY:{
+  const [ciudad, setCiudad] = useState("MTY");
+  const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(localStorage.getItem('count')) || -10);
+  const [cache, setCache] = useState(JSON.parse(localStorage.getItem('cache')) || {MTY:{
                                             ciudad: "Monterrey, MX",
                                             clima: "Nublado",
                                             humedad: 66,
@@ -132,6 +62,9 @@ function App() {
                                             temperatura: 27,
                                             viento: 15
                                           }});
+  useEffect(() => {
+    window.localStorage.setItem('cache', JSON.stringify(cache));
+  },[cache]) ; 
 
   const [ciudad, setCiudad] = useState("MTY");
   const [ciudades, setCiudades] = useState({MTY:{longitud: -100.3167, latitud: 25.6667}});
@@ -162,10 +95,11 @@ function App() {
     .catch(err => console.log(err))
 
     
-    const interval=setInterval(()=>{
-      //actualizaCache(diccionarioCiuades,setCache,llave);
-     },3600000)
-       
+    const interval = setInterval(()=>{
+      if (contadorSegundos === 0){
+        actualizaCache(ciudades,setCache,llave);
+      }
+     },1000)
        
      return () => clearInterval(interval);
   },[])
@@ -180,8 +114,14 @@ function App() {
       viento: cache[ciudad].viento
     });
   },[ciudad,cache]);
-  
-console.log(cache);
+
+  useEffect(() => {
+    window.localStorage.setItem('count', contadorSegundos);
+    const interval = setInterval(()=>{
+      setContadorSegundos((contadorSegundos + 1) % 360000); 
+    },1000);
+    return () => clearInterval(interval); 
+  }, [contadorSegundos]);
 
   return (
   
