@@ -1,5 +1,10 @@
 import React from "react";
 
+/**
+ * Componente que despliega la información de tres datos en un tablero
+ * @param {*} props 
+ * @returns TableroDetalles
+ */
 function TableroDetalles(props) {
     return (
         <div className="tablero">

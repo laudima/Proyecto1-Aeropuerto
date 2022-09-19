@@ -1,7 +1,11 @@
 import React from "react";
 import TableroDetalles from "./TableroDetalles";
 
-
+/**
+ * Despliega la infomación de los detalles del clima; presion, humedad y velocidad del viento
+ * @param {*} props 
+ * @returns Clima Detalles
+ */
 function ClimaDetalles(props) {
     return <TableroDetalles
         titulo="Detalles del Clima"

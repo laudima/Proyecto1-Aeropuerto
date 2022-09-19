@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import CloseIcon from "@material-ui/icons/Close";
 
+/**
+ * Barra buscador de ciudades, filtra la información qeu se le pone en el input 
+ * y al picar enter se actualiza la ciudad
+ * @param {*} param0 
+ * @returns 
+ */
 function SearchBar({ placeholder, data, setCiudad}) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");

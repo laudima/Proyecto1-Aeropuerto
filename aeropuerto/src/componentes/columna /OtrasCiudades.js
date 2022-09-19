@@ -1,7 +1,12 @@
 import React from "react";
 import TableroDetalles from "./TableroDetalles";
 
-
+/**
+ * Despliega la información de tres ciudades más frecuentes que son 
+ * Mexico, Mazatlan y Monterrey
+ * @param {*} props 
+ * @returns 
+ */
 function OtrasCiudades(props){
     return <TableroDetalles
         titulo="Otras Ciudades"

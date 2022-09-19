@@ -4,6 +4,11 @@ import OtrasCiudades from "./OtrasCiudades";
 
 import SearchBar from "./SearchBar";
 
+/**
+ * Información de la columna derecha del tablero, incluye el buscador, el clima y otras ciudades. 
+ * @param {*} props 
+ * @returns Columna
+ */
 function Columna(props) {
     return (
         <div className="columna"> 
