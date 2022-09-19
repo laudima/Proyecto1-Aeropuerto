@@ -5,12 +5,12 @@ import TableroDetalles from "./TableroDetalles";
 function OtrasCiudades(props){
     return <TableroDetalles
         titulo="Otras Ciudades"
-        dato1= "Ciudad de Mexico"
-        dato1info= {props.ciudad1}
-        dato2="Guadalajara"
-        dato2info= {props.ciudad2}
-        dato3= "Monterrey"
-        dato3info= {props.ciudad3}
+        dato1=  {props.data["MEX"].ciudad}
+        dato1info= {props.data["MEX"].temperatura + "°C"} 
+        dato2= {props.data["MZT"].ciudad}
+        dato2info= {props.data["MZT"].temperatura + "°C"}
+        dato3= {props.data["MTY"].ciudad}
+        dato3info= {props.data["MTY"].temperatura + "°C"}
     />
 }
 

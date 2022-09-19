@@ -1,7 +1,8 @@
 import React from "react";
-//import Buscador from "./Buscador";
 import ClimaDetalles from "./ClimaDetalles";
-import OtrasCiudades from "./OtrasCiudades";import SearchBar from "./SearchBar";
+import OtrasCiudades from "./OtrasCiudades";
+
+import SearchBar from "./SearchBar";
 
 function Columna(props) {
     return (
@@ -14,10 +15,13 @@ function Columna(props) {
             <SearchBar
                 placeholder="Buscar ciudad"
                 data = {props.datosCiudades}
+                setCiudad = {props.setCiudad}
             />
 
             <div className="columna-otras-ciudades">
-            <OtrasCiudades/>
+            <OtrasCiudades
+                data = {props.cache}
+            />
 
             </div>
             <div className="columna-detalles-clima">
