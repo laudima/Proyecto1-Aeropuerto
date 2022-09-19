@@ -1,5 +1,9 @@
 import React from 'react'
 
+/**
+ * Componente del logo
+ */
+
 function Logo(){
     return (
             <div>

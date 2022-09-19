@@ -6,11 +6,20 @@ import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
 
+/**
+ * Funcion para actualizar el cache y guardarlo en el almacenamiento local.
+ * Recibe un objeto con nombres de ciudades y para cada una de ellas realiza una peticion fetch asincrona
+ * para obtener los datos del clima de la api CheckWeather y los guarda en el nuevo cache.
+ * 
+ * @param {*} ciudades - diccionario de ciudades a consultar 
+ * @param {*} setCache - funcion setter para actualizar el cache
+ * @param {string} llave - llave de la api 
+ */
 async function actualizaCache(ciudades, setCache, llave){
   let cache = {};
   for (let [ciudad, coordenadas] of Object.entries(ciudades)){
     const longitud = coordenadas.longitud, latitud = coordenadas.latitud;
-    let datosClima = {}
+    let datosClima = {} // Datos de cada ciudad
     let URL = "https://api.checkwx.com/metar/lat/" + latitud + "/lon/" + longitud + "/decoded";
     await fetch(URL, {
         method: "GET",
@@ -18,7 +27,10 @@ async function actualizaCache(ciudades, setCache, llave){
     })
       .then(response => response.json())
       .then(datos =>  {
-
+        /* 
+          Algunos datos del clima pueden o no estar presentes en la respuesta de la api, por eso
+          primero verifica existencia y despues asigna, el valor por defecto siempre sera --.
+        */
         if ("conditions" in datos.data[0]){
           if (datos.data[0].conditions[0] === "RA"){
             datosClima.clima = "Lluvioso";
@@ -41,67 +53,66 @@ async function actualizaCache(ciudades, setCache, llave){
       });
       cache[ciudad] = datosClima;
   }
-  window.localStorage.setItem('cache', JSON.stringify(cache));
-  setCache(cache);
+  window.localStorage.setItem('cache', JSON.stringify(cache)); // Guarda el cache en el almacenamiento local
+  setCache(cache); // Actualiza el cache de la aplicacion.
 }
 
-/*
-  El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
-  se divide en dos secciones, una princciudadipal en la que se muestran los detalles generales y otra  que
-  es una columna con datos especificos y el buscador para cambiar de ciudad.
+/** 
+ * El componente app tiene una imagen de fondo relacionada con el clima de la ciudad que se este mostrando y
+ * se divide en dos secciones, una principal en la que se muestran los detalles generales y otra  que
+ * es una columna con datos especificos y el buscador para cambiar de ciudad.
  */
 function App() {
-  const llave = Config.llave;
-  const [datosClima, setDatosClima] = useState({});
-  const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(localStorage.getItem('count')) || -10);
+  const llave = Config.llave; 
+  const [datosClima, setDatosClima] = useState({}); // Datos de la ciudad seleccionada
+  // Contador del tiempo para actualizar el cache
+  const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(localStorage.getItem('count')) || -10); 
   const [cache, setCache] = useState(JSON.parse(localStorage.getItem('cache')) || {MTY:{
                                             ciudad: "Monterrey, MX",
-                                            clima: "Nublado",
-                                            humedad: 66,
-                                            presion: 29.9,
-                                            temperatura: 27,
-                                            viento: 15
+                                            clima: "--",
+                                            humedad: "--",
+                                            presion: "--",
+                                            temperatura: "--",
+                                            viento: "--"
                                           }});
 
-  const [ciudad, setCiudad] = useState("MTY");
+  const [ciudad, setCiudad] = useState("MTY"); // Ciudad seleccionada
+  // Diccionario de ciudades
   const [ciudades, setCiudades] = useState({MTY:{longitud: -100.3167, latitud: 25.6667}});
-
+                            
   useEffect(()=>{
-    
+    /**
+     * Crea un objeto con los datos de los 3000 tickets, los atributos son los codigos IATA y los valores
+     * las coordenadas de los aeropuertos. Se ejecuta una unica vez al renderizar la aplicacion por primera vez.
+     */
     let diccionarioCiudades = {};
 
       fetch(csv)
-     .then(response => response.text())
-     .then(v => Papa.parse(v,{header: true}))
+     .then(response => response.text()) 
+     .then(v => Papa.parse(v,{header: true})) // Convierte el texto plano del csv a JSON
      .then(tickets => {
           for (let i = 0; i < tickets.data.length; i++){
+            // Solo se agrega un atributo si no existe, para evitar repetidos.
             if (!(tickets.data[i].origin in diccionarioCiudades)){
               diccionarioCiudades[tickets.data[i].origin] = {latitud: tickets.data[i].origin_latitude,
-                                                  longitud:tickets.data[i].origin_longitude};
+                                                             longitud:tickets.data[i].origin_longitude};
             }
         
             if (!(tickets.data[i].destination in diccionarioCiudades)){
               diccionarioCiudades[tickets.data[i].destination] = {latitud: tickets.data[i].destination_latitude,
-                                                  longitud:tickets.data[i].destination_longitude};
+                                                                  longitud:tickets.data[i].destination_longitude};
             }
           }
-        //actualizaCache(ciudades,setCache,llave);
-         console.log(diccionarioCiudades);
-        setCiudades(diccionarioCiudades);
-        //actualizaCache(diccionarioCiudades,setCache,llave);
+        setCiudades(diccionarioCiudades); 
     })
      .catch(err => console.log(err))
-    
-    
-    const interval=setInterval(()=>{
-      //actualizaCache(ciudades,setCache,llave);
-     },3600000)
-       
-       
-     return () => clearInterval(interval);
   },[])
   
   useEffect(()=>{
+    /**
+     * Este hook cambia los datos de la ciudad actual cada que se selecciona una nueva o se actualiza
+     * el cache, por eso tiene estas dos dependencias.
+     */
     setDatosClima({
       ciudad: cache[ciudad].ciudad,
       clima: cache[ciudad].clima,
@@ -112,13 +123,15 @@ function App() {
     });
   },[ciudad,cache]);
   
-console.log(cache);
-
   useEffect(() => {
+    /**
+     * Este hook incrementa el contador de segundos para que se actualice el cache cada hora y lo
+     * guarda en el almacenamiento local para que no se reinicie al recargar la pagina.
+     */
     window.localStorage.setItem('count', contadorSegundos);
     const interval = setInterval(()=>{
       if (contadorSegundos === 0){
-        actualizaCache(ciudades,setCache,llave);
+        actualizaCache(ciudades,setCache,llave); // Actualiza el cache cada hora
       }
       setContadorSegundos((contadorSegundos + 1) % 3600); 
     },1000);
