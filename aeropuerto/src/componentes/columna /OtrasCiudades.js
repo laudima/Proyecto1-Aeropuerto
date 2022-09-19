@@ -8,6 +8,9 @@ import TableroDetalles from "./TableroDetalles";
  * @returns 
  */
 function OtrasCiudades(props){
+    if(Object.keys(props.data).length < 3){
+        return null
+    }
     return <TableroDetalles
         titulo="Otras Ciudades"
         dato1=  {props.data["MEX"].ciudad}

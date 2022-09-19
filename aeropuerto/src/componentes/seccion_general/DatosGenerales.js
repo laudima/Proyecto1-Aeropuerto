@@ -15,6 +15,7 @@ function DatosGenerales(props){
                 temperatura={props.temperatura + "°"}
                 ciudad={props.ciudad}
                 clima={props.clima}
+                icono={props.icono}
             />
         </div>
         

@@ -1,5 +1,4 @@
 import {React, useState, useEffect} from "react";
-import iconoNube from "../../imagenes/nube-i.svg";
 
 /**
  * El componente datos recibe como props la temperatura, la ciudad y el clima que se va a mostrar
@@ -34,7 +33,8 @@ function Datos(props){
                 </div>
                 
                 <div className="clima">
-                    <img style={{width:"60px", height:"60px",filter: "invert(100%) sepia(54%) saturate(2%) hue-rotate(74deg) brightness(110%) contrast(101%)"}} src={iconoNube} alt="imagen_clima"/>
+                    <img style={{width:"60px", height:"60px",filter: "invert(100%) sepia(54%) saturate(2%) hue-rotate(74deg) brightness(110%) contrast(101%)"}} 
+                    src={props.icono} alt="imagen_clima"/>
                     <p style={{fontSize:"20px", fontWeight:"300"}}>{clima}</p>
                 </div>
             
