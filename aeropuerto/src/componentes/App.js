@@ -26,7 +26,7 @@ async function actualizaCache(ciudades, setCache, llave){
             datosClima.clima = "Tormenta Electrica";
           }
         }
-
+        
         if (!("clima" in datosClima)){
             datosClima.clima = datos.data[0].clouds[0].code.startsWith("CLR") || 
                                datos.data[0].clouds[0].code.startsWith("FEW") ? "Soleado" : "Nublado";
@@ -91,7 +91,7 @@ function App() {
         //actualizaCache(diccionarioCiudades,setCache,llave);
     })
      .catch(err => console.log(err))
-
+    
     
     const interval=setInterval(()=>{
       //actualizaCache(ciudades,setCache,llave);
@@ -113,17 +113,6 @@ function App() {
   },[ciudad,cache]);
   
 console.log(cache);
-  
-  useEffect(()=>{
-    setDatosClima({
-      ciudad: cache[ciudad].ciudad,
-      clima: cache[ciudad].clima,
-      humedad: cache[ciudad].humedad,
-      presion: cache[ciudad].presion,
-      temperatura: cache[ciudad].temperatura,
-      viento: cache[ciudad].viento
-    });
-  },[ciudad,cache]);
 
   useEffect(() => {
     window.localStorage.setItem('count', contadorSegundos);
