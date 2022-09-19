@@ -1,11 +1,11 @@
 import {React, useState, useEffect} from "react";
 
-/* 
-    El componente datos recibe como props la temperatura, la ciudad y el clima que se va a mostrar
-    en la aplicacion y renderiza dinamicamente un icono dependiendo del clima que haya en el momento.
-*/
-
-
+/**
+ * El componente datos recibe como props la temperatura, la ciudad y el clima que se va a mostrar
+ * en la aplicacion y renderiza dinamicamente un icono dependiendo del clima que haya en el momento.
+ * @param {*} props - datos del clima
+ */
+    
 function Datos(props){
     
     const {temperatura,ciudad,clima} = props;
@@ -13,10 +13,9 @@ function Datos(props){
     const [fecha, setFecha] = useState(new Date().toLocaleString('es-ES',configuracionFecha));
 
     useEffect(() => {
-        var timer = setInterval( () => tick(), 1000 );
-        return function limpia() {
-            clearInterval(timer);
-            };
+        // Hook para actualizar la fecha cada segundo
+        var timer = setInterval(() => tick(), 1000);
+        return function limpia() {clearInterval(timer);};
     });
       
     function tick() {
