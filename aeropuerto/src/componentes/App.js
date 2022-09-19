@@ -113,8 +113,6 @@ function App() {
   },[ciudad,cache]);
   
 console.log(cache);
-
-  },[])
   
   useEffect(()=>{
     setDatosClima({
