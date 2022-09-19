@@ -13,6 +13,7 @@ import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
 
+
 function actualizaClima(clima,setImagen, setIcono){
   switch(clima){
     case "Nublado":
