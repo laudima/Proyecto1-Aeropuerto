@@ -38,18 +38,19 @@ function SearchBar({ placeholder, data, setCiudad}) {
         />
         <div className="searchIcon">
           {filteredData.length === 0 ? (
-            <SearchIcon />
+            <SearchIcon style={{ color: "white" }}/>
           ) : (
-            <CloseIcon id="clearBtn" onClick={clearInput} />
-          )}
+            <CloseIcon style={{ color: "white" }} id="clearBtn" onClick={clearInput} />
+          )
+          }
         </div>
       </div>
       {filteredData.length !== 0 && (
         <div className="dataResult">
           {filteredData.slice(0, 15).map((value, index) => {
             return (
-              <span key={index} className="dataItem" href={value.ciudad} target="_blank">
-                <p style={{fontSize:"15px", fontWeight:"200",color:"black"}}>{value.ciudad} </p>
+              <span key={index} className="dataItem" onClick={()=>setCiudad(value)}>
+                <p style={{fontSize:"15px", fontWeight:"200",color:"black"}}>{value} </p>
               </span>
             );
           })}

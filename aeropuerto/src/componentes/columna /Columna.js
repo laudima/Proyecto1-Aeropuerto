@@ -19,7 +19,9 @@ function Columna(props) {
             />
 
             <div className="columna-otras-ciudades">
-            <OtrasCiudades/>
+            <OtrasCiudades
+                data = {props.cache}
+            />
 
             </div>
             <div className="columna-detalles-clima">

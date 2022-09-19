@@ -126,7 +126,7 @@ function App() {
           clima={datosClima.clima}
           />
       </div>
-      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades} setCiudad={setCiudad}/></div>
+      <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades} setCiudad={setCiudad} cache={cache}/></div>
     </div>
   );
 }
