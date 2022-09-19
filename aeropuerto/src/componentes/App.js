@@ -1,10 +1,42 @@
 import {React, useState, useEffect} from "react";
 import Nubes from "../imagenes/nubes1.jpg" // Imagen provisional
+import Lluvia from "../imagenes/lluvia.jpg" // Imagen provisional
+import Soleado from "../imagenes/soleado.jpg";
+import Tormenta from "../imagenes/tormenta.jpg";
+import LluviaIcono from "../imagenes/lluvia.svg";
+import NubesIcono from "../imagenes/nube-i.svg";
+import SoleadoIcono from "../imagenes/soleado.svg";
+import TormentaIcono from "../imagenes/tormenta.svg";
 import DatosGenerales from "./seccion_general/DatosGenerales";
 import Columna from "./columna /Columna";
 import Config from "../config.js"
 import Papa from 'papaparse';
 import csv from "../dataset1.csv";
+
+function actualizaClima(clima,setImagen, setIcono){
+  switch(clima){
+    case "Nublado":
+      setImagen(Nubes);
+      setIcono(NubesIcono);
+      return;
+    case "Lluvioso":
+      setImagen(Lluvia);
+      setIcono(LluviaIcono);
+      return;
+    case "Soleado":
+      setImagen(Soleado);
+      setIcono(SoleadoIcono);
+      return;
+    case "Tormenta Electrica":
+      setImagen(Tormenta);
+      setIcono(TormentaIcono);
+      return;
+    default:
+      setImagen(Nubes);
+      setIcono(NubesIcono);
+      return;
+  }
+}
 
 async function actualizaCache(ciudades, setCache, llave){
   let cache = {};
@@ -20,9 +52,9 @@ async function actualizaCache(ciudades, setCache, llave){
       .then(datos =>  {
 
         if ("conditions" in datos.data[0]){
-          if (datos.data[0].conditions[0] === "RA"){
+          if (datos.data[0].conditions[0].code === "RA"){
             datosClima.clima = "Lluvioso";
-          }else if (datos.data[0].conditions[0] === "TS"){
+          }else if (datos.data[0].conditions[0].code === "TS"){
             datosClima.clima = "Tormenta Electrica";
           }
         }
@@ -53,7 +85,7 @@ async function actualizaCache(ciudades, setCache, llave){
 function App() {
   const llave = Config.llave;
   const [datosClima, setDatosClima] = useState({});
-  const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(localStorage.getItem('count')) || -10);
+  const [contadorSegundos, setContadorSegundos] = useState(JSON.parse(-10));
   const [cache, setCache] = useState(JSON.parse(localStorage.getItem('cache')) || {MTY:{
                                             ciudad: "Monterrey, MX",
                                             clima: "Nublado",
@@ -65,6 +97,8 @@ function App() {
 
   const [ciudad, setCiudad] = useState("MTY");
   const [ciudades, setCiudades] = useState({MTY:{longitud: -100.3167, latitud: 25.6667}});
+  const [imagen, setImagen] = useState(Nubes);
+  const [icono, setIcono] = useState(NubesIcono);
 
   useEffect(()=>{
     
@@ -110,6 +144,7 @@ function App() {
       temperatura: cache[ciudad].temperatura,
       viento: cache[ciudad].viento
     });
+    actualizaClima(cache[ciudad].clima, setImagen, setIcono);
   },[ciudad,cache]);
   
 console.log(cache);
@@ -127,13 +162,14 @@ console.log(cache);
 
   return (
   
-    <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${Nubes})`, backgroundSize:'cover'}}>
+    <div className="app" style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${imagen})`, backgroundSize:'cover'}}>
       
       <div className="columna-datos-generales">
         <DatosGenerales
           temperatura={datosClima.temperatura}
           ciudad={datosClima.ciudad}
           clima={datosClima.clima}
+          icono={icono}
           />
       </div>
       <div className="columna-detalles"><Columna datos={datosClima} datosCiudades={ciudades} setCiudad={setCiudad} cache={cache}/></div>
