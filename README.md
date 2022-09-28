@@ -5,6 +5,19 @@ Programa para entregar el informe del clima de la ciudad de salida y la ciudad d
 1. Tener el manejador de paquetes de Node  instalado
 2. Tener la llave de la API de CheckWeather
 3. Poner la llave en el archivo _config.json_ en la carpeta _src_
+4. Instalar la libreria de Material IU 
+
+```
+npm install @material-ui/icons
+
+```
+```
+npm install @material-ui/core' 
+```
+5. Instalar la libreria de Papaparse
+```
+npm install papaparse 
+```
 
 ## Para ejecutar el programa
 
@@ -16,3 +29,14 @@ Programa para entregar el informe del clima de la ciudad de salida y la ciudad d
 ``npm install``
 4. Ejecutar el comando 
 ``npm start``
+
+## Pruebas 
+```
+npm test 
+```
+## Documentación 
+
+Para ver el README del proyecto 
+```
+npm docs  
+```
