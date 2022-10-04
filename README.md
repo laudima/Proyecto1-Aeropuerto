@@ -4,7 +4,7 @@ Programa para entregar el informe del clima de la ciudad de salida y la ciudad d
 ## Pre-requisitos
 1. Tener el manejador de paquetes de Node  instalado
 2. Tener la llave de la API de CheckWeather
-3. Poner la llave en el archivo _config.json_ en la carpeta _src_
+3. Poner la llave en el archivo escrbir la llave en el archivo `src/config.js`
 4. Instalar la libreria de Material IU 
 
 ```
@@ -21,7 +21,7 @@ npm install papaparse
 
 ## Para ejecutar el programa
 
-1. Clonar el repositorio 
+1. Clonar el repositorio (clonar el repositorio de la rama main )
 ```git clone git@github.com:laudima/Proyecto1-Aeropuerto.git```
 2. Abrir la terminal en la carpeta donde se instalo el archivo
 3. Cambiarse a la carpeta **aeropuerto**
