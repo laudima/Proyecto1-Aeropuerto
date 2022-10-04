@@ -1,9 +1,7 @@
 import React from "react";
 import ClimaDetalles from "./ClimaDetalles";
 import OtrasCiudades from "./OtrasCiudades";
-
-import SearchBar from "./SearchBar";
-
+import BarraBuscador from "./BarraBuscador";
 /**
  * Información de la columna derecha del tablero, incluye el buscador, el clima y otras ciudades. 
  * @param {*} props 
@@ -13,16 +11,12 @@ function Columna(props) {
     return (
         <div className="columna"> 
             
-            {/*<Buscador 
-                datosCiudades={props.datosCiudades}
-            />*/}
-            
-            <SearchBar
+            <BarraBuscador 
                 placeholder="Buscar ciudad"
-                data = {props.datosCiudades}
+                data ={props.datosCiudades}
                 setCiudad = {props.setCiudad}
             />
-
+            
             <div className="columna-otras-ciudades">
             <OtrasCiudades
                 data = {props.cache}

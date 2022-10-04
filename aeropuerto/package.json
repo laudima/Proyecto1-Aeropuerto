@@ -1,7 +1,7 @@
 {
   "name": "aeropuerto",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@testing-library/jest-dom": "^5.16.5",
@@ -35,5 +35,21 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "Programa para entregar el informe del clima de la ciudad de salida y la ciudad de llegada para 3 mil tickets que salen el mismo día",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laudima/Proyecto1-Aeropuerto.git"
+  },
+  "keywords": [
+    "Weather"
+  ],
+  "author": "laudima,alexbri22",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laudima/Proyecto1-Aeropuerto/issues"
+  },
+  "homepage": "https://github.com/laudima/Proyecto1-Aeropuerto#readme"
 }
